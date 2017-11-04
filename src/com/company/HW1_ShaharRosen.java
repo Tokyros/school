@@ -29,15 +29,12 @@ public class HW1_ShaharRosen {
 
             String hint = "";
             switch (hintCount){
-                case "1":
-                    hint += num1;
-                    break;
+                case "3":
+                    hint += num3;
                 case "2":
                     hint += ", " + num2;
-                    break;
-                case "3":
-                    hint += ", " + num3;
-                    break;
+                case "1":
+                    hint += ", " + num1;
             }
 
             System.out.println(hint);
