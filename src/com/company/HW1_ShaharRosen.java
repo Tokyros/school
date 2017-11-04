@@ -3,9 +3,6 @@ package com.company;
 import javax.swing.*;
 import java.util.Random;
 
-/**
- * Created by SBK on 11/2/2017.
- */
 public class HW1_ShaharRosen {
     public static void main(String[] args) {
         boolean shouldPlay = true;
@@ -42,6 +39,7 @@ public class HW1_ShaharRosen {
                     hint += ", " + num3;
                     break;
             }
+
             System.out.println(hint);
 
             boolean gameWon = false;
