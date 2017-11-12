@@ -43,19 +43,21 @@ public class HW1_ShaharRosen {
 
             String currentPlayer = player2;
 
+            //Flag to keep track if the player won the game, used to stop the game and announce the winner.
             boolean gameWon = false;
             do {
-                if (currentPlayer.isEmpty()) {
-                    currentPlayer = player1;
-                } else if (currentPlayer.equals(player1)) {
+                //Toggle the current player.
+                if (currentPlayer.equals(player1)) {
                     currentPlayer = player2;
                 } else {
                     currentPlayer = player1;
                 }
 
+                //Variables to keep track of the user's current guesses
                 int guess1 = 0;
                 int guess2 = 0;
 
+                //Variables to keep track of how many
                 int numOfGuesses = 0;
                 int correctGuesses = 0;
 
