@@ -1,7 +1,6 @@
 package com.company;
 
-import javax.swing.*;
-import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class HW1_ShaharRosen {
     public static void main(String[] args) {
@@ -9,28 +8,27 @@ public class HW1_ShaharRosen {
 
         do {
             String playerNamePrompt = "Please enter full name for player #%s:";
-            String player1 = "Player #1, " +  JOptionPane.showInputDialog(String.format(playerNamePrompt, 1));
+            String player1 = "Player #1, " + JOptionPane.showInputDialog(String.format(playerNamePrompt, 1));
             String player2 = "Player #2, " + JOptionPane.showInputDialog(String.format(playerNamePrompt, 2));
             String practicePrompt = "For Practice:\nHow many secret numbers do you want to show:\nPress 1, 2, 3 or Cancel for none";
 
             int hintCount = Integer.parseInt(JOptionPane.showInputDialog(practicePrompt));
 
-            Random random = new Random();
             int num1, num2, num3;
-            num1 = random.nextInt(4) + 1;
+            num1 = (int) (Math.random() * 4) + 1;
 
             do {
-                num2 = random.nextInt(4) + 1;
+                num2 = (int) (Math.random() * 4) + 1;
             }
             while (num2 == num1);
 
             do {
-                num3 = random.nextInt(4) + 1;
+                num3 = (int) (Math.random() * 4) + 1;
             }
             while (num3 == num2 || num3 == num1);
 
             String hint = "";
-            switch (hintCount){
+            switch (hintCount) {
                 case 3:
                     hint += num3;
                 case 2:
@@ -47,10 +45,9 @@ public class HW1_ShaharRosen {
 
             boolean gameWon = false;
             do {
-                if (currentPlayer.isEmpty()){
+                if (currentPlayer.isEmpty()) {
                     currentPlayer = player1;
-                }
-                else if (currentPlayer.equals(player1)){
+                } else if (currentPlayer.equals(player1)) {
                     currentPlayer = player2;
                 } else {
                     currentPlayer = player1;
@@ -62,32 +59,32 @@ public class HW1_ShaharRosen {
                 int numOfGuesses = 0;
                 int correctGuesses = 0;
 
-                while (numOfGuesses <= 2){
+                while (numOfGuesses <= 2) {
                     boolean duplicateGuessFlag = false;
                     int currentGuess = Integer.parseInt(JOptionPane.showInputDialog("Guess a num - " + currentPlayer));
-                    if (numOfGuesses == 0){
+                    if (numOfGuesses == 0) {
                         guess1 = currentGuess;
-                    } else if (numOfGuesses == 1){
+                    } else if (numOfGuesses == 1) {
                         guess2 = currentGuess;
-                        if (currentGuess == guess1){
+                        if (currentGuess == guess1) {
                             duplicateGuessFlag = true;
                         }
                     } else {
-                        if (currentGuess == guess2 || currentGuess == guess1){
+                        if (currentGuess == guess2 || currentGuess == guess1) {
                             duplicateGuessFlag = true;
                         }
                     }
 
-                    if (duplicateGuessFlag){
+                    if (duplicateGuessFlag) {
                         JOptionPane.showMessageDialog(null, "Don't choose the same number twice", "Number already chosen", JOptionPane.ERROR_MESSAGE);
                     } else {
                         numOfGuesses++;
-                        if (currentGuess == num1 || currentGuess == num2 || currentGuess == num3){
+                        if (currentGuess == num1 || currentGuess == num2 || currentGuess == num3) {
                             correctGuesses++;
                         }
                     }
                 }
-                if (correctGuesses == 3){
+                if (correctGuesses == 3) {
                     gameWon = true;
                 }
             } while (!gameWon);
