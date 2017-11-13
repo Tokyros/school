@@ -1,6 +1,5 @@
+//Shahar Rosen - 2045417917
 package com.company;
-
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.JOptionPane;
 
@@ -19,13 +18,22 @@ public class HW1_ShaharRosen {
         final String PLAYER_NAME_PROMPT = "Please enter full name for player #%s:";
         // Message to show when asking if the user wants practice mode.
         final String PRACTICE_PROMPT = "For Practice:\nHow many secret numbers do you want to show:\nPress 1, 2, 3 or Cancel for none";
+        final String INVALID_HINT_COUNT_MESSAGE = "You much either choose 1, 2, 3 or Cancel for practice mode";
+        final String FIRST_GUESS = "First";
+        final String SECOND_GUESS = "Second";
+        final String THIRD_GUESS = "Third";
+
+        final String GUESS_PROMPT = "%s\nPlease enter your %s guess";
+        final String DUPLICATED_GUESS_WARNING_MESSAGE = "Don't choose the same number twice";
         // Message to show when the game is won.
         final String GAME_WON_MESSAGE = "Congratulations!\n%s Won!\nDo you want to start a new game?";
 
+        // Flag to check weather the user request for practice mode was valid
+        boolean hintCountValid;
         // Holds the choice of weather to play another game or not.
         boolean shouldPlayAgain;
         // Strings to hold the players' names and the requested number of hints in practice mode.
-        String player1, player2, hintCount;
+        String player1, player2, hintCount, guessCountString;
         // Variables to hold the random numbers to guess.
         int randomNumber1, randomNumber2, randomNumber3;
 
@@ -51,17 +59,29 @@ public class HW1_ShaharRosen {
             // for the thirds random number we make sure it is different from the first and the second number.
             while (randomNumber3 == randomNumber2 || randomNumber3 == randomNumber1);
 
-            //Ask the user how many hints he wants to get
-            hintCount = JOptionPane.showInputDialog(PRACTICE_PROMPT);
-            //Print to the console the requested amount of hints
-            switch (hintCount) {
-                case "3":
-                    System.out.print(randomNumber3 + ", ");
-                case "2":
-                    System.out.print(randomNumber2 + ", ");
-                case "1":
-                    System.out.println(randomNumber1);
-            }
+            do {
+                //Ask the user how many hints he wants to get
+                hintCount = JOptionPane.showInputDialog(PRACTICE_PROMPT);
+                //Print to the console the requested amount of hints
+                if (hintCount == null){
+                    hintCountValid = true;
+                }
+                else {
+                    switch (hintCount) {
+                        case "3":
+                            System.out.print(randomNumber3 + ", ");
+                        case "2":
+                            System.out.print(randomNumber2 + ", ");
+                        case "1":
+                            System.out.println(randomNumber1);
+                            hintCountValid = true;
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(null, INVALID_HINT_COUNT_MESSAGE, null, JOptionPane.ERROR_MESSAGE);
+                            hintCountValid = false;
+                    }
+                }
+            } while (!hintCountValid);
 
             //Initialize the player to player2, that way when the game starts, player1 will be the first to go.
             String currentPlayer = player2;
@@ -86,10 +106,21 @@ public class HW1_ShaharRosen {
 
                 //Make sure the users don't get more guesses than the maximum allowed
                 while (numOfGuesses < MAXIMUM_GUESSES_ALLOWED) {
+
+                    guessCountString = FIRST_GUESS;
+                    switch (numOfGuesses){
+                        case 1:
+                            guessCountString = SECOND_GUESS;
+                            break;
+                        case 2:
+                            guessCountString = THIRD_GUESS;
+                            break;
+                    }
+
                     //A flag to keep track of weather the user guessed the same number twice.
                     boolean duplicateGuessFlag = false;
                     //Get the current guess from the user
-                    int currentGuess = Integer.parseInt(JOptionPane.showInputDialog("Guess a num - " + currentPlayer));
+                    int currentGuess = Integer.parseInt(JOptionPane.showInputDialog(String.format(GUESS_PROMPT, currentPlayer, guessCountString)));
                     // First guess
                     if (numOfGuesses == 0) {
                         //The first guess is always ok because it is still not possible to repeat guesses
@@ -111,7 +142,7 @@ public class HW1_ShaharRosen {
 
                     // If a user guessed the same number twice, we raise a warning to the user.
                     if (duplicateGuessFlag) {
-                        JOptionPane.showMessageDialog(null, "Don't choose the same number twice", "Number already chosen", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, DUPLICATED_GUESS_WARNING_MESSAGE, null, JOptionPane.ERROR_MESSAGE);
                     } else {
                         // If the user did not repeat a guess, we consider this attempt valid and increment the number of guesses.
                         numOfGuesses++;
