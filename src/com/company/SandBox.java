@@ -1,11 +1,32 @@
 package com.company;
 
-/**
- * Created by SBK on 11/9/2017.
- */
+import javax.swing.JOptionPane;
+
 public class SandBox {
     public static void main(String[] args) {
-        getMostFrequentDigit(2459784);
+        targil3_Q1();
+    }
+
+    public static void counter(){
+
+    }
+
+    private static void targil3_Q1(){
+        int shouldPlayAgain;
+        do {
+            int maxNum = 0;
+            boolean moreNumbers = true;
+            do {
+                String input = JOptionPane.showInputDialog(null, "Gimme a num");
+                if (input == null) {
+                    moreNumbers = false;
+                } else {
+                    int currentNum = Integer.parseInt(input);
+                    if (currentNum > maxNum) maxNum = currentNum;
+                }
+            } while (moreNumbers);
+            shouldPlayAgain = JOptionPane.showConfirmDialog(null, "Play again?");
+        } while (shouldPlayAgain == JOptionPane.YES_OPTION);
     }
 
     public static int getMostFrequentDigit(int num){
