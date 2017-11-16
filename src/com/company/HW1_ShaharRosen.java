@@ -1,97 +1,149 @@
+//Shahar Rosen - 2045417917
 package com.company;
 
-import javax.swing.*;
-import java.util.Random;
+import javax.swing.JOptionPane;
 
-/**
- * Created by SBK on 11/2/2017.
- */
 public class HW1_ShaharRosen {
+
     public static void main(String[] args) {
-        boolean shouldPlay = true;
-        while (shouldPlay){
-            final String playerNamePrompt = "Please enter full name for player #%s:";
-            String player1 = "Player #1, " +  JOptionPane.showInputDialog(String.format(playerNamePrompt, 1));
-            String player2 = "Player #2, " + JOptionPane.showInputDialog(String.format(playerNamePrompt, 2));
-            String practicePrompt = "For Practice:\nHow many secret numbers do you want to show:\nPress 1, 2, 3 or Cancel for none";
-            String hintCount = JOptionPane.showInputDialog(practicePrompt);
+        final int RANDOM_LIMIT = 5;
+        final int CONFIRM = 0;
+        final int MAXIMUM_GUESSES_ALLOWED = 3;
+        final int RANDOM_NUMBERS_COUNT = 3;
 
-            Random random = new Random();
+        final String PLAYER_NAME_PROMPT = "Please enter full name for player #%s:";
+        final String PLAYER_1_PREFIX = "Player #1, ";
+        final String PLAYER_2_PREFIX = "Player #2, ";
+        final String PRACTICE_PROMPT = "For Practice:\nHow many secret numbers do you want to show:\nPress 1, 2, 3 or Cancel for none";
+        final String SHOW_THREE_HINTS = "3";
+        final String SHOW_TWO_HINTS = "2";
+        final String SHOW_ONE_HINT = "1";
+        final String INVALID_HINT_COUNT_MESSAGE = "You much either choose 1, 2, 3 or Cancel for practice mode";
+        final String FIRST_GUESS = "first";
+        final String SECOND_GUESS = "second";
+        final String THIRD_GUESS = "third";
+        final String GUESS_PROMPT = "%s\nPlease enter your %s guess";
+        final String DUPLICATED_GUESS_WARNING_MESSAGE = "Don't choose the same number twice";
+        final String CORRECT_GUESSES_MESSAGE = "%d numbers were guessed correctly!";
+        final String GAME_WON_MESSAGE = "Congratulations!\n%s Won!\nDo you want to start a new game?";
+        final String GAME_OVER_MESSAGE = "The game has ended, thank you for playing.";
 
-            String num1 = random.nextInt(4) + 1 + "";
+        boolean gameWon, isNumberOfHintsToShowInvalid, isFirstGuess, isSecondGuess, isDuplicateGuess, shouldPlayAgain;
+        String player1, player2, numberOfHintsToShow, guessCountString, currentPlayer, currentGuessString, guessPromptMessage;
+        int randomNumber1, randomNumber2, randomNumber3, amountOfGuesses, amountOfCorrectGuesses, firstGuess, secondGuess, currentGuess;
 
-            String num2 = random.nextInt(4) + 1 + "";
-            while (num2.equals(num1)){
-                num2 = random.nextInt(4) + 1 + "";
+        // Game loop
+        do {
+            // reset the game
+            currentPlayer = null;
+            gameWon = false;
+
+            // Sign up - asking for the players' names.
+            player1 = PLAYER_1_PREFIX + JOptionPane.showInputDialog(String.format(PLAYER_NAME_PROMPT, 1));
+            player2 = PLAYER_2_PREFIX + JOptionPane.showInputDialog(String.format(PLAYER_NAME_PROMPT, 2));
+
+            // randomly choose 3 distinct numbers between 1 and RANDOM_LIMIT inclusive
+            randomNumber1 = (int) (Math.random() * RANDOM_LIMIT) + 1;
+            do {
+                randomNumber2 = (int) (Math.random() * RANDOM_LIMIT) + 1;
             }
+            while (randomNumber2 == randomNumber1);
 
-            String num3 = random.nextInt(4) + 1 + "";
-            while (num3.equals(num2) || num3.equals(num1)){
-                num3 = random.nextInt(4) + 1 + "";
+            do {
+                randomNumber3 = (int) (Math.random() * RANDOM_LIMIT) + 1;
             }
+            while (randomNumber3 == randomNumber2 || randomNumber3 == randomNumber1);
 
-            String hint = "";
-            switch (hintCount){
-                case "1":
-                    hint += num1;
-                    break;
-                case "2":
-                    hint += ", " + num2;
-                    break;
-                case "3":
-                    hint += ", " + num3;
-                    break;
-            }
-            System.out.println(hint);
-
-            boolean gameWon = false;
-            String winner = "";
-            String currentPlayer = player1;
-
-            while (!gameWon){
-                String guess1 = null;
-                String guess2 = null;
-
-                int numOfGuesses = 0;
-                int correctGuesses = 0;
-
-                while (numOfGuesses < 3){
-                    String currentGuess = JOptionPane.showInputDialog("Guess a num - " + currentPlayer);
-                    if (guess1 == null){
-                        guess1 = currentGuess;
-                        numOfGuesses++;
-                    } else if (guess2 == null){
-                        if (currentGuess.equals(guess1)){
-                            JOptionPane.showMessageDialog(null, "Don't choose the same number twice", "Number already chosen", JOptionPane.ERROR_MESSAGE);
-                            continue;
-                        } else {
-                            guess2 = currentGuess;
-                            numOfGuesses++;
-                        }
-                    } else {
-                        if (currentGuess.equals(guess2)){
-                            //Display Error
-                            continue;
-                        } else {
-                            numOfGuesses++;
-                        }
-                    }
-                    if (currentGuess.equals(num1) || currentGuess.equals(num2) || currentGuess.equals(num3)){
-                        correctGuesses++;
+            // Practice mode - reveal some of the random numbers according to player's input
+            do {
+                numberOfHintsToShow = JOptionPane.showInputDialog(PRACTICE_PROMPT);
+                // The player chose "Cancel"
+                if (numberOfHintsToShow == null){
+                    isNumberOfHintsToShowInvalid = false;
+                }
+                else {
+                    switch (numberOfHintsToShow) {
+                        case SHOW_THREE_HINTS:
+                            System.out.print(randomNumber3 + ", ");
+                        case SHOW_TWO_HINTS:
+                            System.out.print(randomNumber2 + ", ");
+                        case SHOW_ONE_HINT:
+                            System.out.println(randomNumber1);
+                            isNumberOfHintsToShowInvalid = false;
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(null, INVALID_HINT_COUNT_MESSAGE, null, JOptionPane.ERROR_MESSAGE);
+                            isNumberOfHintsToShowInvalid = true;
                     }
                 }
-                if (correctGuesses == 3){
-                    winner = currentPlayer;
+            } while (isNumberOfHintsToShowInvalid);
+
+            // player's turn loop
+            do {
+                // Reset the round
+                firstGuess = 0;
+                secondGuess = 0;
+                amountOfGuesses = 0;
+                amountOfCorrectGuesses = 0;
+
+                //Toggle the current player.
+                if (currentPlayer == null || currentPlayer.equals(player2)) {
+                    currentPlayer = player1;
+                } else {
+                    currentPlayer = player2;
+                }
+
+                // Guessing loop
+                while (amountOfGuesses < MAXIMUM_GUESSES_ALLOWED) {
+
+                    isFirstGuess = amountOfGuesses == 0;
+                    isSecondGuess = amountOfGuesses == 1;
+
+                    //Ask the player to guess a number
+                    if (isFirstGuess){
+                        guessCountString = FIRST_GUESS;
+                    } else if (isSecondGuess){
+                        guessCountString = SECOND_GUESS;
+                    } else {
+                        guessCountString = THIRD_GUESS;
+                    }
+                    guessPromptMessage = String.format(GUESS_PROMPT, currentPlayer, guessCountString);
+                    currentGuessString = JOptionPane.showInputDialog(guessPromptMessage);
+                    currentGuess = Integer.parseInt(currentGuessString);
+
+                    //Verify current guess was not guessed already
+                    if (isFirstGuess) {
+                        firstGuess = currentGuess;
+                        isDuplicateGuess = false;
+                    } else if (isSecondGuess) {
+                            isDuplicateGuess = currentGuess == firstGuess;
+                            if (!isDuplicateGuess) secondGuess = currentGuess;
+                    } else {
+                        isDuplicateGuess = currentGuess == secondGuess || currentGuess == firstGuess;
+                    }
+
+                    if (isDuplicateGuess) {
+                        //Error message for duplicated guess
+                        JOptionPane.showMessageDialog(null, DUPLICATED_GUESS_WARNING_MESSAGE, null, JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        amountOfGuesses++;
+                        //Check if the guess is correct
+                        if (currentGuess == randomNumber1 || currentGuess == randomNumber2 || currentGuess == randomNumber3) {
+                            amountOfCorrectGuesses++;
+                        }
+                    }
+                }
+                if (amountOfCorrectGuesses == RANDOM_NUMBERS_COUNT) {
+                    // Player guessed all numbers correctly and won the game
                     gameWon = true;
                 } else {
-                    if (currentPlayer.equals(player1)){
-                        currentPlayer = player2;
-                    } else {
-                        currentPlayer = player1;
-                    }
+                    //Show how many guesses were correct
+                    JOptionPane.showMessageDialog(null, String.format(CORRECT_GUESSES_MESSAGE, amountOfCorrectGuesses));
                 }
-            }
-            shouldPlay = JOptionPane.showConfirmDialog(null, "Congratulations!\n" + winner + " Won!\nDo you want to star a new game?") == 0;
-        }
+            } while (!gameWon);
+            // Ask if the players want to play another game
+            shouldPlayAgain = JOptionPane.showConfirmDialog(null, String.format(GAME_WON_MESSAGE, currentPlayer)) == CONFIRM;
+        } while (shouldPlayAgain);
+        JOptionPane.showMessageDialog(null, GAME_OVER_MESSAGE);
     }
 }
