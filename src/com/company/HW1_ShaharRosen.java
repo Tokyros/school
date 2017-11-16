@@ -12,6 +12,8 @@ public class HW1_ShaharRosen {
         final int RANDOM_NUMBERS_COUNT = 3;
 
         final String PLAYER_NAME_PROMPT = "Please enter full name for player #%s:";
+        final String PLAYER_1_PREFIX = "Player #1, ";
+        final String PLAYER_2_PREFIX = "Player #2, ";
         final String PRACTICE_PROMPT = "For Practice:\nHow many secret numbers do you want to show:\nPress 1, 2, 3 or Cancel for none";
         final String SHOW_THREE_HINTS = "3";
         final String SHOW_TWO_HINTS = "2";
@@ -24,6 +26,7 @@ public class HW1_ShaharRosen {
         final String DUPLICATED_GUESS_WARNING_MESSAGE = "Don't choose the same number twice";
         final String CORRECT_GUESSES_MESSAGE = "%d numbers were guessed correctly!";
         final String GAME_WON_MESSAGE = "Congratulations!\n%s Won!\nDo you want to start a new game?";
+        final String GAME_OVER_MESSAGE = "The game has ended, thank you for playing.";
 
         boolean gameWon, isNumberOfHintsToShowInvalid, isFirstGuess, isSecondGuess, isDuplicateGuess, shouldPlayAgain;
         String player1, player2, numberOfHintsToShow, guessCountString, currentPlayer, currentGuessString, guessPromptMessage;
@@ -36,8 +39,8 @@ public class HW1_ShaharRosen {
             gameWon = false;
 
             // Sign up - asking for the players' names.
-            player1 = "Player #1, " + JOptionPane.showInputDialog(String.format(PLAYER_NAME_PROMPT, 1));
-            player2 = "Player #2, " + JOptionPane.showInputDialog(String.format(PLAYER_NAME_PROMPT, 2));
+            player1 = PLAYER_1_PREFIX + JOptionPane.showInputDialog(String.format(PLAYER_NAME_PROMPT, 1));
+            player2 = PLAYER_2_PREFIX + JOptionPane.showInputDialog(String.format(PLAYER_NAME_PROMPT, 2));
 
             // randomly choose 3 distinct numbers between 1 and RANDOM_LIMIT inclusive
             randomNumber1 = (int) (Math.random() * RANDOM_LIMIT) + 1;
@@ -141,5 +144,6 @@ public class HW1_ShaharRosen {
             // Ask if the players want to play another game
             shouldPlayAgain = JOptionPane.showConfirmDialog(null, String.format(GAME_WON_MESSAGE, currentPlayer)) == CONFIRM;
         } while (shouldPlayAgain);
+        JOptionPane.showMessageDialog(null, GAME_OVER_MESSAGE);
     }
 }
