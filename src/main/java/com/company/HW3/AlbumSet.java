@@ -36,13 +36,15 @@ public class AlbumSet {
 
     // special setter: adding song to album
     public void addSongToAlbum(String albumName, String songName, String artistName, int minutes, int seconds) {
-        Album albumToAddTo;
         if (isAlbumExists(albumName)) {
             getOneAlbumByIndex(getAlbumIndex(albumName)).addSong(songName, artistName, minutes, seconds);
         } else {
-            albumToAddTo = new Album(albumName);
-            albumToAddTo.addSong(songName, artistName, minutes, seconds);
-            this.albums[this.numAlbums++] = albumToAddTo;
+            //TODO: What if not?
+            if (this.numAlbums < this.albums.length){
+                Album albumToAddTo = new Album(albumName);
+                albumToAddTo.addSong(songName, artistName, minutes, seconds);
+                this.albums[this.numAlbums++] = albumToAddTo;
+            }
         }
     }
 
@@ -53,7 +55,7 @@ public class AlbumSet {
 
     public int getAlbumIndex(String albumName) {
         for (int i = 0; i < this.numAlbums; i++) {
-            if (this.albums[i].getAlbumName().toLowerCase().equals(albumName.toLowerCase())) return i;
+            if (this.albums[i].getAlbumName().equalsIgnoreCase(albumName)) return i;
         }
         return -1;
     }

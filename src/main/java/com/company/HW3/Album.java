@@ -34,9 +34,13 @@ public class Album {
 	
 	// special setters: adding new song
 	public void addSong(Song newSong){
-	    totalAlbumLength += newSong.getSongLength();
-        this.songs[this.numSongs++] = newSong;
+		//TODO: What if not?
+		if (this.numSongs < this.songs.length){
+	    	totalAlbumLength += newSong.getSongLength();
+        	this.songs[this.numSongs++] = newSong;
+		}
 	}
+
 	public void addSong(String songName, String artistName, int minutes, int seconds){
         Song newSong = new Song(songName, artistName, minutes, seconds);
         this.addSong(newSong);
@@ -45,7 +49,7 @@ public class Album {
 	// special Methods	
 	public int isSongExist(String songName){
         for (int i = 0; i < this.numSongs; i++) {
-            if (this.songs[i].getSongName().equalsIgnoreCase(songName.toLowerCase())) return i;
+            if (this.songs[i].isSongEqaul(songName)) return i;
         }
         return -1;
     }
@@ -57,7 +61,7 @@ public class Album {
                     Song temp = this.songs[j];
                     this.songs[j] = this.songs[i];
                     this.songs[i] = temp;
-                } else if (this.songs[i].getArtistName().equals(this.songs[j].getArtistName()) && this.songs[i].getSongName().compareTo(this.songs[j].getSongName()) > 0){
+                } else if (this.songs[i].isAtristEqaul(this.songs[j].getArtistName()) && this.songs[i].getSongName().compareTo(this.songs[j].getSongName()) > 0){
                     Song temp = this.songs[j];
                     this.songs[j] = this.songs[i];
                     this.songs[i] = temp;
