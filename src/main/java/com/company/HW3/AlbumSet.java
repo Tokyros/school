@@ -1,20 +1,16 @@
 package com.company.HW3;
 
 public class AlbumSet {
-
+    //Properties
+    private final int MAX_ALBUMS = 20;
     private String owner;
     private Album[] albums;
-    int numAlbums;
-    // Behaviours
-
-    // *** to be completed ***
-
+    private int numAlbums;
 
     // Constructor
     public AlbumSet(String owner) {
         setOwner(owner);
-        this.albums = new Album[20];
-        this.numAlbums = 0;
+        this.albums = new Album[MAX_ALBUMS];
     }
 
     // getters
@@ -27,6 +23,7 @@ public class AlbumSet {
     }
 
     public Album getOneAlbumByIndex(int index) {
+        if (index > MAX_ALBUMS - 1 || index < 0) return null;
         return this.albums[index];
     }
 
@@ -38,19 +35,16 @@ public class AlbumSet {
     public void addSongToAlbum(String albumName, String songName, String artistName, int minutes, int seconds) {
         if (isAlbumExists(albumName)) {
             getOneAlbumByIndex(getAlbumIndex(albumName)).addSong(songName, artistName, minutes, seconds);
-        } else {
-            //TODO: What if not?
-            if (this.numAlbums < this.albums.length){
-                Album albumToAddTo = new Album(albumName);
-                albumToAddTo.addSong(songName, artistName, minutes, seconds);
-                this.albums[this.numAlbums++] = albumToAddTo;
-            }
+        } else if (this.numAlbums < this.albums.length){
+            Album newAlbum = new Album(albumName);
+            newAlbum.addSong(songName, artistName, minutes, seconds);
+            this.albums[this.numAlbums++] = newAlbum;
         }
     }
 
     // special Methods
     public boolean isAlbumExists(String albumName) {
-        return getAlbumIndex(albumName) >= 0;
+        return getAlbumIndex(albumName) > -1;
     }
 
     public int getAlbumIndex(String albumName) {
@@ -64,20 +58,21 @@ public class AlbumSet {
         for (int i = 0; i < numAlbums; i++) {
             for (int j = i + 1; j < numAlbums; j++) {
                 if (getOneAlbumByIndex(i).getAlbumName().compareTo(getOneAlbumByIndex(j).getAlbumName()) > 0){
-                    Album temp = getOneAlbumByIndex(j);
-                    albums[j] = albums[i];
-                    albums[i] = temp;
+                    swapAlbums(i, j);
                 }
             }
         }
+    }
 
+    private void swapAlbums(int i, int j){
+        Album temp = getOneAlbumByIndex(j);
+        albums[j] = getOneAlbumByIndex(i);
+        albums[i] = temp;
     }
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Number of albums: ");
-        sb.append(numAlbums);
-        sb.append("\n");
+        sb.append("Number of albums: ").append(numAlbums).append("\n");
         for (int i = 0; i < numAlbums; i++) {
             Album album = albums[i];
             sb.append(album);

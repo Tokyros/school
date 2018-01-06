@@ -2,6 +2,7 @@ package com.company.HW3;
 
 public class Album {
 	// class behaviours
+	private final int MAX_SONGS = 20;
 	private String albumName;
 	private Song[] songs;
 	private int totalAlbumLength;
@@ -10,7 +11,7 @@ public class Album {
 	// constructor
 	public Album(String albumName){
         setAlbumName(albumName);
-        this.songs = new Song[20];
+        this.songs = new Song[MAX_SONGS];
 	}
 	
 	// getters
@@ -53,23 +54,33 @@ public class Album {
         }
         return -1;
     }
-		
+
+    //Bubble sort
 	public void sortByArtist(){
         for (int i = 0; i < numSongs; i++) {
             for (int j = i+1; j < numSongs; j++) {
-                if (this.songs[i].getArtistName().compareTo(this.songs[j].getArtistName()) > 0){
-                    Song temp = this.songs[j];
-                    this.songs[j] = this.songs[i];
-                    this.songs[i] = temp;
-                } else if (this.songs[i].isAtristEqaul(this.songs[j].getArtistName()) && this.songs[i].getSongName().compareTo(this.songs[j].getSongName()) > 0){
-                    Song temp = this.songs[j];
-                    this.songs[j] = this.songs[i];
-                    this.songs[i] = temp;
-                }
+				Song songI = this.songs[i];
+				Song songJ = this.songs[j];
+				boolean shouldSwap;
+
+				// If songs have the same artist we sort by song length ascending.
+				if (songI.isAtristEqaul(songJ.getArtistName())){
+					shouldSwap = songI.getSongLength() > songJ.getSongLength();
+				} else {
+					// Otherwise we sort by the artist name lexicographically ascending
+					shouldSwap = songI.getArtistName().compareToIgnoreCase(songJ.getArtistName()) > 0;
+				}
+
+				if (shouldSwap) swapSongs(i, j);
             }
         }
     }
-	
+
+    private void swapSongs(int i, int j){
+		Song temp = this.songs[j];
+		this.songs[j] = this.songs[i];
+		this.songs[i] = temp;
+	}
 	
 	// toString	
 	public String toString(){
