@@ -56,9 +56,9 @@ public class AlbumSet {
 
     public void sortByAlbumsName() {
         for (int i = 0; i < numAlbums; i++) {
-            for (int j = i + 1; j < numAlbums; j++) {
-                if (getOneAlbumByIndex(i).getAlbumName().compareTo(getOneAlbumByIndex(j).getAlbumName()) > 0){
-                    swapAlbums(i, j);
+            for (int j = 1; j < numAlbums-i; j++) {
+                if (getOneAlbumByIndex(j-1).getAlbumName().compareToIgnoreCase(getOneAlbumByIndex(j).getAlbumName()) > 0){
+                    swapAlbums(j, j-1);
                 }
             }
         }

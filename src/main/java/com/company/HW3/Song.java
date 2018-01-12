@@ -1,12 +1,10 @@
 package com.company.HW3;
 
 public class Song {
-    // class behaviours
-    private String songName = "";
-    private String artistName = "";
-    private int songLength = 0;
+    private String songName;
+    private String artistName;
+    private int songLength;
 
-    //constructors
     public Song(String songName, String artistName, int minutes, int seconds) {
         setSongName(songName);
         setAtristName(artistName);
@@ -19,7 +17,6 @@ public class Song {
         setSongLength(seconds);
     }
 
-    // getters
     public String getSongName() {
         return this.songName;
     }
@@ -32,7 +29,6 @@ public class Song {
         return this.songLength;
     }
 
-    // setters
     public void setSongName(String songName) {
         this.songName = songName.substring(0, 1).toUpperCase() + songName.substring(1).toLowerCase();
     }
@@ -49,7 +45,6 @@ public class Song {
         this.songLength = seconds;
     }
 
-    // special Methods
     public boolean isSongEqaul(String songName) {
         return songName.equalsIgnoreCase(getSongName());
     }
@@ -58,7 +53,6 @@ public class Song {
         return artistName.equalsIgnoreCase(getArtistName());
     }
 
-    // to String
     public String toString() {
         return "Song Name: " + this.songName + ", Artist Name: " + this.artistName
                 + ", Song Length: " + this.songLength + " seconds";
